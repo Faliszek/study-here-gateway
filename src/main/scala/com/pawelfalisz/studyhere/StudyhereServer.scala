@@ -16,6 +16,7 @@ object StudyhereServer {
       client <- BlazeClientBuilder[F](global).stream
       helloWorldAlg = HelloWorld.impl[F]
       jokeAlg = Jokes.impl[F](client)
+      loginAlg = Login.impl[F]
 
       // Combine Service Routes into an HttpApp.
       // Can also be done via a Router if you
@@ -23,7 +24,8 @@ object StudyhereServer {
       // in the underlying routes.
       httpApp = (
         StudyhereRoutes.helloWorldRoutes[F](helloWorldAlg) <+>
-        StudyhereRoutes.jokeRoutes[F](jokeAlg)
+        StudyhereRoutes.jokeRoutes[F](jokeAlg) <+>
+        StudyhereRoutes.loginRoutes[F](loginAlg)
       ).orNotFound
 
       // With Middlewares in place
